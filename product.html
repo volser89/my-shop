@@ -1,10 +1,44 @@
-<button onclick="addToCart('Товар 1', 100)">Добавить в корзину</button>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Товар 1</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Товар 1</h1>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="products.html">Каталог</a>
+      <a href="cart.html">Корзина (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Товар 1</h2>
+      <p>Описание: Очень полезный товар. Цена: 100 ₪</p>
+      <button id="add-btn">Добавить в корзину</button>
+    </div>
+  </main>
 
-<script>
-  function addToCart(name, price) {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    cart.push({ name, price });
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Товар добавлен в корзину!');
-  }
-</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function addToCart(name, price) {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        cart.push({ name, price });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert('Товар добавлен в корзину!');
+      }
+
+      document.getElementById('add-btn').addEventListener('click', () => {
+        addToCart('Товар 1', 100);
+      });
+
+      // обновим счётчик корзины
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      document.getElementById('cart-count').textContent = cart.length;
+    });
+  </script>
+</body>
+</html>
