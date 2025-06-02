@@ -1,41 +1,20 @@
-<input type="text" id="search" placeholder="Поиск по названию..." oninput="filterProducts()">
-<div id="product-list">
-  <!-- сюда добавим карточки -->
-</div>
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>Каталог товаров</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>Каталог товаров</h1>
-    <nav>
-      <a href="index.html">Главная</a>
-      <a href="products.html">Каталог</a>
-      <a href="contact.html">Контакты</a>
-    </nav>
-  </header>
-  <main>
-    <div class="card">
-      <h3><a href="product.html">Товар 1</a></h3>
-      <p>Описание товара. Цена: 100 ₪</p>
-    </div>
-    <div class="card">
-      <h3><a href="product.html">Товар 2</a></h3>
-      <p>Описание товара. Цена: 200 ₪</p>
-    </div>
-  </main>
-</body>
-</html>
 <script>
   const products = [
-    { name: 'Товар 1', price: 100 },
-    { name: 'Товар 2', price: 200 },
-    { name: 'Товар 3', price: 300 }
+    {
+      name: 'Товар 1',
+      price: 100,
+      image: 'img/product1.jpg'
+    },
+    {
+      name: 'Товар 2',
+      price: 200,
+      image: 'img/product2.jpg'
+    },
+    {
+      name: 'Товар 3',
+      price: 300,
+      image: 'img/product3.jpg'
+    }
   ];
 
   function renderProducts(list) {
@@ -44,8 +23,12 @@
     list.forEach(p => {
       const card = document.createElement('div');
       card.className = 'card';
-      card.innerHTML = `<h3>${p.name}</h3><p>Цена: ${p.price} ₪</p>
-        <button onclick="addToCart('${p.name}', ${p.price})">Добавить в корзину</button>`;
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}" style="width: 100%; border-radius: 8px;">
+        <h3>${p.name}</h3>
+        <p>Цена: ${p.price} ₪</p>
+        <button onclick="addToCart('${p.name}', ${p.price}, '${p.image}')">Добавить в корзину</button>
+      `;
       container.appendChild(card);
     });
   }
@@ -56,12 +39,5 @@
     renderProducts(filtered);
   }
 
-  function addToCart(name, price) {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    cart.push({ name, price });
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Добавлено в корзину');
-  }
-
-  renderProducts(products);
-</script>
+  function addToCart(name, price, image) {
+    const cart = JSON.parse(lo
