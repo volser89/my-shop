@@ -1,44 +1,82 @@
-<script>
-  
-  const products = [
-    {
-      name: 'Товар 1',
-      price: 100,
-      image: 'img/product1.jpg'
-    },
-    {
-      name: 'Товар 2',
-      price: 200,
-      image: 'img/product2.jpg'
-    },
-    {
-      name: 'Товар 3',
-      price: 300,
-      image: 'img/product3.jpg'
-    }
-  ];
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Каталог товаров</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Каталог товаров</h1>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="products.html">Каталог</a>
+      <a href="cart.html">Корзина (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+  <main>
+    <input type="text" id="search" placeholder="Поиск по названию..." oninput="filterProducts()">
+    <div id="product-list"></div>
+  </main>
 
-  function renderProducts(list) {
-    const container = document.getElementById('product-list');
-    container.innerHTML = '';
-    list.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <img src="${p.image}" alt="${p.name}" style="width: 100%; border-radius: 8px;">
-        <h3>${p.name}</h3>
-        <p>Цена: ${p.price} ₪</p>
-        <button onclick="addToCart('${p.name}', ${p.price}, '${p.image}')">Добавить в корзину</button>
-      `;
-      container.appendChild(card);
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const products = [
+        {
+          name: 'Товар 1',
+          price: 100,
+          image: 'img/product1.jpg'
+        },
+        {
+          name: 'Товар 2',
+          price: 200,
+          image: 'img/product2.jpg'
+        },
+        {
+          name: 'Товар 3',
+          price: 300,
+          image: 'img/product3.jpg'
+        }
+      ];
+
+      function renderProducts(list) {
+        const container = document.getElementById('product-list');
+        container.innerHTML = '';
+        list.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${p.image}" alt="${p.name}" style="width: 100%; border-radius: 8px;">
+            <h3>${p.name}</h3>
+            <p>Цена: ${p.price} ₪</p>
+            <button onclick="addToCart('${p.name}', ${p.price}, '${p.image}')">Добавить в корзину</button>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      function filterProducts() {
+        const query = document.getElementById('search').value.toLowerCase();
+        const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+        renderProducts(filtered);
+      }
+
+      function addToCart(name, price, image) {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        cart.push({ name, price, image });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert('Добавлено в корзину');
+        document.getElementById('cart-count').textContent = cart.length;
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        document.getElementById('cart-count').textContent = cart.length;
+      }
+
+      renderProducts(products);
+      updateCartCount();
     });
-  }
-
-  function filterProducts() {
-    const query = document.getElementById('search').value.toLowerCase();
-    const filtered = products.filter(p => p.name.toLowerCase().includes(query));
-    renderProducts(filtered);
-  }
-
-  function addToCart(name, price, image) {
-    const cart = JSON.parse(lo
+  </script>
+</body>
+</html>
