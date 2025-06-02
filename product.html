@@ -2,12 +2,12 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Товар 1</title>
+  <title>Корзина</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Товар 1</h1>
+    <h1>Корзина</h1>
     <nav>
       <a href="index.html">Главная</a>
       <a href="products.html">Каталог</a>
@@ -15,29 +15,50 @@
     </nav>
   </header>
   <main>
-    <div class="card">
-      <h2>Товар 1</h2>
-      <p>Описание: Очень полезный товар. Цена: 100 ₪</p>
-      <button id="add-btn">Добавить в корзину</button>
-    </div>
+    <div id="cart-items"></div>
+    <p><strong>Итого: <span id="total">0</span> ₪</strong></p>
+    <a href="checkout.html">Перейти к оформлению заказа</a>
   </main>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      function addToCart(name, price) {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        cart.push({ name, price });
-        localStorage.setItem('cart', JSON.stringify(cart));
-        alert('Товар добавлен в корзину!');
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+      function renderCart() {
+        const container = document.getElementById('cart-items');
+        container.innerHTML = '';
+        let total = 0;
+
+        if (cart.length === 0) {
+          container.innerHTML = '<p>Корзина пуста</p>';
+          document.getElementById('total').textContent = '0';
+          document.getElementById('cart-count').textContent = '0';
+          return;
+        }
+
+        cart.forEach((item, index) => {
+          const div = document.createElement('div');
+          div.className = 'card';
+          div.innerHTML = `
+            <h3>${item.name}</h3>
+            <p>Цена: ${item.price} ₪</p>
+            <button onclick="removeItem(${index})">Удалить</button>
+          `;
+          container.appendChild(div);
+          total += item.price;
+        });
+
+        document.getElementById('total').textContent = total;
+        document.getElementById('cart-count').textContent = cart.length;
       }
 
-      document.getElementById('add-btn').addEventListener('click', () => {
-        addToCart('Товар 1', 100);
-      });
+      window.removeItem = function(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+      }
 
-      // обновим счётчик корзины
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      document.getElementById('cart-count').textContent = cart.length;
+      renderCart();
     });
   </script>
 </body>
