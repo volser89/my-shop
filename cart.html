@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Корзина</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Корзина</h1>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="products.html">Каталог</a>
+      <a href="cart.html">Корзина</a>
+    </nav>
+  </header>
+  <main>
+    <div id="cart-items"></div>
+    <p><strong>Итого: <span id="total">0</span> ₪</strong></p>
+    <a href="checkout.html">Перейти к оформлению заказа</a>
+  </main>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const container = document.getElementById('cart-items');
+    let total = 0;
+
+    cart.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `<h3>${item.name}</h3><p>Цена: ${item.price} ₪</p>`;
+      container.appendChild(div);
+      total += item.price;
+    });
+
+    document.getElementById('total').textContent = total;
+  </script>
+</body>
+</html>
