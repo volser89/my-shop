@@ -18,5 +18,13 @@
     <h2>Добро пожаловать!</h2>
     <p>У нас вы найдёте лучшие товары по отличным ценам.</p>
   </main>
+  <script>
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    document.getElementById('cart-count').textContent = cart.length;
+  }
+  updateCartCount();
+</script>
+
 </body>
 </html>
